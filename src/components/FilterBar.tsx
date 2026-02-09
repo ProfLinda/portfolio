@@ -1,6 +1,6 @@
 "use client";
 
-import type { GalleryTag } from "../data/portfolio";
+import type { GalleryTag } from "../types/portfolio";
 
 type FilterBarProps = {
   tags: GalleryTag[];

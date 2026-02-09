@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import type { Service } from "../data/portfolio";
+import type { Service } from "../types/portfolio";
 
 type ServicesListProps = {
   services: Service[];

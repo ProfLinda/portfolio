@@ -1,12 +1,9 @@
 "use client";
 
+import type { SiteInfo } from "../types/portfolio";
+
 type FooterProps = {
-  info: {
-    name: string;
-    location: string;
-    handle: string;
-    email: string;
-  };
+  info: SiteInfo;
 };
 
 export default function Footer({ info }: FooterProps) {

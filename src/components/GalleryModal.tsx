@@ -2,7 +2,7 @@
 
 import { Dialog } from "@headlessui/react";
 import Image from "next/image";
-import type { PortfolioItem } from "../data/portfolio";
+import type { PortfolioItem } from "../types/portfolio";
 
 type GalleryModalProps = {
   item: PortfolioItem | null;

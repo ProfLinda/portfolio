@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import type { PortfolioItem } from "../data/portfolio";
+import type { PortfolioItem } from "../types/portfolio";
 
 type GalleryProps = {
   items: PortfolioItem[];

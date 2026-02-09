@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import type { GalleryTag, HeroTile } from "../data/portfolio";
+import type { GalleryTag, HeroTile } from "../types/portfolio";
 
 type HeroGridProps = {
   tiles: HeroTile[];

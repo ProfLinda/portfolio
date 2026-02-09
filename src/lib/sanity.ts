@@ -36,7 +36,7 @@ const portfolioQuery = `{
     email,
     tagline
   },
-  "categories": *[_type == "category"]|order(order asc){
+  "categories": *[_type == "galleryTag"]|order(order asc){
     title
   },
   "heroTiles": *[_type == "heroTile"]|order(order asc){

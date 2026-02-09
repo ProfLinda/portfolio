@@ -1,65 +1,152 @@
+"use client";
+
 import Image from "next/image";
+import { useMemo, useRef, useState } from "react";
+import FilterBar from "../components/FilterBar";
+import Footer from "../components/Footer";
+import Gallery from "../components/Gallery";
+import GalleryModal from "../components/GalleryModal";
+import HeroGrid from "../components/HeroGrid";
+import ServicesList from "../components/ServicesList";
+import {
+  galleryTags,
+  heroTiles,
+  portfolioItems,
+  services,
+  siteInfo,
+  type GalleryTag,
+  type PortfolioItem,
+} from "../data/portfolio";
 
 export default function Home() {
+  const [activeTag, setActiveTag] = useState<GalleryTag>("All");
+  const [selectedItem, setSelectedItem] = useState<PortfolioItem | null>(null);
+  const galleryRef = useRef<HTMLDivElement | null>(null);
+
+  const filteredItems = useMemo(() => {
+    if (activeTag === "All") {
+      return portfolioItems;
+    }
+    return portfolioItems.filter((item) => item.category === activeTag);
+  }, [activeTag]);
+
+  const handleSelectCategory = (category: GalleryTag) => {
+    setActiveTag(category);
+    galleryRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+    <div className="page-shell grain">
+      <div className="page-content">
+        <header className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-10">
+          <div className="flex items-center gap-4">
+            <div className="relative h-12 w-12 overflow-hidden rounded-full border border-[color:var(--edge)]">
+              <Image src="/logo.png" alt={`${siteInfo.name} logo`} fill className="object-cover" />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xs uppercase tracking-[0.4em] text-[color:var(--muted)]">
+                {siteInfo.location}
+              </span>
+              <span className="font-[family:var(--font-serif)] text-2xl uppercase tracking-wide">
+                {siteInfo.name}
+              </span>
+            </div>
+          </div>
+          <nav className="hidden items-center gap-8 md:flex">
+            <a className="nav-link" href="#work">
+              Work
+            </a>
+            <a className="nav-link" href="#services">
+              Services
+            </a>
+            <a className="nav-link" href="#contact">
+              Contact
+            </a>
+          </nav>
+        </header>
+
+        <main className="mx-auto flex w-full max-w-6xl flex-col gap-16 px-6 pb-24">
+          <section className="flex flex-col gap-6">
+            <div className="flex items-end justify-between">
+              <div className="max-w-xl text-sm uppercase tracking-[0.35em] text-[color:var(--muted)]">
+                Editorial photography + video for brands, product, and athletic
+                performance.
+              </div>
+              <div className="hidden text-right text-xs uppercase tracking-[0.3em] text-[color:var(--muted)] md:block">
+                Portfolio 2024–2026
+              </div>
+            </div>
+            <HeroGrid tiles={heroTiles} onSelectCategory={handleSelectCategory} />
+          </section>
+
+          <section className="signature-row">
+            <strong>Impact. Texture. Motion.</strong>
+            <span>Product · Event · Gym · Social · Video</span>
+            <span>48h selects · Full edit in 5 days</span>
+          </section>
+
+          <section id="work" ref={galleryRef} className="flex flex-col gap-10">
+            <div className="flex flex-col gap-4">
+              <p className="text-xs uppercase tracking-[0.3em] text-[color:var(--muted)]">
+                Selected Work
+              </p>
+              <h2 className="section-title">Gallery</h2>
+            </div>
+            <FilterBar
+              tags={galleryTags}
+              active={activeTag}
+              onChange={setActiveTag}
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            <Gallery items={filteredItems} onSelect={setSelectedItem} />
+          </section>
+
+          <section id="services" className="flex flex-col gap-10">
+            <div className="flex flex-col gap-4">
+              <p className="text-xs uppercase tracking-[0.3em] text-[color:var(--muted)]">
+                Studio Practice
+              </p>
+              <h2 className="section-title">Services</h2>
+            </div>
+            <ServicesList services={services} />
+          </section>
+
+          <section
+            id="contact"
+            className="flex flex-col gap-8 border-y border-[color:var(--line)] py-14"
           >
-            Documentation
-          </a>
-        </div>
-      </main>
+            <div className="flex flex-col gap-4">
+              <p className="text-xs uppercase tracking-[0.3em] text-[color:var(--muted)]">
+                Bookings
+              </p>
+              <h2 className="section-title">Let&apos;s build your next set</h2>
+              <p className="text-sm text-[color:var(--muted)]">
+                Share the project scope, timeline, and mood. I&apos;ll respond with
+                a treatment and rate pack.
+              </p>
+            </div>
+            <form className="cta-form">
+              <input
+                className="input-dark"
+                placeholder="Name"
+                name="name"
+                type="text"
+              />
+              <input
+                className="input-dark"
+                placeholder="Email"
+                name="email"
+                type="email"
+              />
+              <button className="btn-solid" type="submit">
+                Request
+              </button>
+            </form>
+          </section>
+
+          <Footer info={siteInfo} />
+        </main>
+      </div>
+      <GalleryModal item={selectedItem} onClose={() => setSelectedItem(null)} />
     </div>
   );
 }
